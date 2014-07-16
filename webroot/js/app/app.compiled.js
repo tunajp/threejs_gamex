@@ -201,7 +201,7 @@ System.register("openingscene", [], function() {
     this.renderer = renderer;
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100000);
-    this.camera.position = new THREE.Vector3(-20, 10, 500 / 2);
+    this.camera.position.set(-20, 10, 500 / 2);
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.light = new THREE.SpotLight(0xffffff);
@@ -304,7 +304,7 @@ System.register("startscene", [], function() {
     this.renderer = renderer;
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100000);
-    this.camera.position = new THREE.Vector3(0, 150, 500);
+    this.camera.position.set(0, 150, 500);
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     $(document.body).append('<div id="startscene_background"></div>');
@@ -1035,7 +1035,7 @@ System.register("threefieldscene", [], function() {
     this.renderer = renderer;
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100000);
-    this.camera.position = new THREE.Vector3(0, 150, 500);
+    this.camera.position.set(0, 150, 500);
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.light = new THREE.SpotLight(0xffffff);
