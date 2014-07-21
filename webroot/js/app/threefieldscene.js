@@ -12,6 +12,7 @@ module PXTerrain from './objects/terrain';
 module PXSkybox from './objects/skybox';
 module PXRatamahatta from './objects/ratamahatta';
 module PXDebugfloor from './objects/debugfloor';
+module PXEnemies from './objects/enemies';
 
 //threefield.jsで以下修正
 //var jumpMaxDuration = 700;//1000;
@@ -42,7 +43,7 @@ export class ThreefieldScene
     /** ambient light */
     this.ambient;
     /** items_count */
-    this.all_items = 5;
+    this.all_items = 6;
     /** load item count */
     this.loaded_items = 0;
     /** next scene */
@@ -52,6 +53,8 @@ export class ThreefieldScene
     /** clock */
     this.clock;
     this.attack_delta = 0;
+    /** for enemies ground collision array */
+    this.grounds_collision_array = new Array();
 
     /** */
     this.player_mesh;
@@ -64,7 +67,8 @@ export class ThreefieldScene
     this.scene = new THREE.Scene();
 
     // Camera
-    this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100000);
+    //this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100000);
+    this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 20000);
     this.camera.position.set(0, 150, 500);
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
@@ -221,10 +225,29 @@ export class ThreefieldScene
     }
 
     for (var i=0; i<this.render_target_array.length; i++) {
-      this.render_target_array[i].rendering(delta);
+      this.render_target_array[i].rendering(delta, this.grounds_collision_array);
     }
 
-    PXUtil.debug_board('delta: ' + delta + '<br>person x:' + this.playerController.object.position.x + " y:" + this.playerController.object.position.y + " z:" + this.playerController.object.position.z);
+    PXUtil.debug_board(
+      'delta: ' + delta +
+      '<br>person x:' + this.playerController.object.position.x +
+      " y:" + this.playerController.object.position.y +
+      " z:" + this.playerController.object.position.z +
+      '<br>' +
+      'info.memory.programs:' + this.renderer.info.memory.programs +
+      '<br>' +
+      'info.memory.geometries:' + this.renderer.info.memory.geometries +
+      '<br>' +
+      'info.memory.textures:' + this.renderer.info.memory.textures +
+      '<br>' +
+      'info.render.calls:' + this.renderer.info.render.calls +
+      '<br>' +
+      'info.render.vertices:' + this.renderer.info.render.vertices +
+      '<br>' +
+      'info.render.faces:' + this.renderer.info.render.faces +
+      '<br>' +
+      'info.render.points:' + this.renderer.info.render.points
+      );
 
     this.renderer.render(this.scene, this.camera);
   }
@@ -269,48 +292,52 @@ export class ThreefieldScene
     //  this.loadedIncrements();
     //});
     //this.render_target_array.push(debugfloor);
-    /*
-     * water
-     */
-    //load texture
-    var waterNormals = new THREE.ImageUtils.loadTexture(PXConfig._ASSETS_PATH_ + 'water/waternormals.jpg');
-    waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
-    // direction light add
-    var directionalLight = new THREE.DirectionalLight(0xffff55, 1);
-    directionalLight.position.set(-600, 300, 600);
-    this.scene.add(directionalLight);
 
-    this.water = new THREE.Water(this.renderer, this.camera, this.scene, {
-      textureWidth: 256,
-      textureHeight: 256,
-      waterNormals: waterNormals,
-      alpha: 	0.5/*1.0*/,
-      sunDirection: directionalLight.position.normalize(),
-      sunColor: 0xffffff,
-      waterColor: 0x001e0f,
-      betaVersion: 0,
-      side: THREE.DoubleSide,
-			distortionScale: 50.0
-    });
-    var waterMesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(2000*10, 2000*10, 100, 100), 
-      this.water.material
-    );
-    waterMesh.position.y = -600;
-    waterMesh.add(this.water);
-    waterMesh.rotation.x = - Math.PI * 0.5;
-    this.scene.add(waterMesh);
+    ///*
+    // * water(これだけで5万くらいの頂点数が必要になる)
+    // */
+    ////load texture
+    //var waterNormals = new THREE.ImageUtils.loadTexture(PXConfig._ASSETS_PATH_ + 'water/waternormals.jpg');
+    //waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+    //// direction light add
+    //var directionalLight = new THREE.DirectionalLight(0xffff55, 1);
+    //directionalLight.position.set(-600, 300, 600);
+    //this.scene.add(directionalLight);
+
+    //this.water = new THREE.Water(this.renderer, this.camera, this.scene, {
+    //  textureWidth: 256,
+    //  textureHeight: 256,
+    //  waterNormals: waterNormals,
+    //  alpha: 	0.5/*1.0*/,
+    //  sunDirection: directionalLight.position.normalize(),
+    //  sunColor: 0xffffff,
+    //  waterColor: 0x001e0f,
+    //  betaVersion: 0,
+    //  side: THREE.DoubleSide,
+	//		distortionScale: 50.0
+    //});
+    //var waterMesh = new THREE.Mesh(
+    //  new THREE.PlaneGeometry(2000*10, 2000*10, 100, 100), 
+    //  this.water.material
+    //);
+    //waterMesh.position.y = -600;
+    //waterMesh.add(this.water);
+    //waterMesh.rotation.x = - Math.PI * 0.5;
+    //this.scene.add(waterMesh);
 
     /*
      * terrain
      */
-    var terrain = new PXTerrain.Terrain( (mesh) => {
+    this.terrain = new PXTerrain.Terrain( (mesh) => {
       this.scene.add(mesh);
       this.loadedIncrements();
 
       // physics
       var groundBody = new THREEFIELD.Collider(mesh);
       this.world.add(groundBody);
+
+      // for enemies
+      this.grounds_collision_array.push(mesh);
     });
 
     /*
@@ -342,6 +369,21 @@ export class ThreefieldScene
       this.loadedIncrements();
     });
     this.render_target_array.push(this.user_character);
+
+    /*
+     * enemy's group 1
+     * GL ERROR :GL_INVALID_OPERATION : glDrawElements: attempt to access out of range vertices in attribute 1が発生する(GPUメモリが足りない？)
+     */
+    var enemies = new PXEnemies.Enemies(10, (meshes, sprites) => {
+      for (var i=0; i<meshes.length; i++) {
+        this.scene.add(meshes[i]);
+      }
+      for (var i=0; i<sprites.length; i++) {
+        this.scene.add(sprites[i]);
+      }
+      this.loadedIncrements();
+    });
+    this.render_target_array.push(enemies);
   }
 
   /**

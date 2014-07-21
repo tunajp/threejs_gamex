@@ -836,7 +836,7 @@ System.register("testscene", [], function() {
             person.root.position.y = intersects[0].point.y + 25;
           }
         }
-        PXUtil.debug_board('delta: ' + delta + '<br>person x:' + person.root.position.x + " y:" + person.root.position.y + " z:" + person.root.position.z);
+        PXUtil.debug_board('delta: ' + delta + '<br>person x:' + person.root.position.x + " y:" + person.root.position.y + " z:" + person.root.position.z + '<br>' + 'info.memory.programs:' + this.renderer.info.memory.programs + '<br>' + 'info.memory.geometries:' + this.renderer.info.memory.geometries + '<br>' + 'info.memory.textures:' + this.renderer.info.memory.textures + '<br>' + 'info.render.calls:' + this.renderer.info.render.calls + '<br>' + 'info.render.vertices:' + this.renderer.info.render.vertices + '<br>' + 'info.render.faces:' + this.renderer.info.render.faces + '<br>' + 'info.render.points:' + this.renderer.info.render.points);
         this.light.position.set(person.root.position.x, person.root.position.y + 1000, person.root.position.z);
         this.light.target.position.set(person.root.position.x, person.root.position.y - 25, person.root.position.z);
         {
@@ -1021,6 +1021,278 @@ System.register("objects/debugfloor", [], function() {
       return Debugfloor;
     }};
 });
+System.register("objects/enemies", [], function() {
+  "use strict";
+  var __moduleName = "objects/enemies";
+  var PXUtil = System.get("util");
+  var PXConfig = System.get("config");
+  var Sprite = function Sprite(message, callback_function) {
+    PXUtil.trace_func('Sprite::constructor');
+    this.callback_function = callback_function;
+    this.sprite = this.makeTextSprite(message, {
+      fontsize: 24,
+      borderColor: {
+        r: 255,
+        g: 0,
+        b: 0,
+        a: 1.0
+      },
+      backgroundColor: {
+        r: 255,
+        g: 100,
+        b: 100,
+        a: 0.8
+      }
+    });
+    this.callback_function(this.sprite);
+  };
+  ($traceurRuntime.createClass)(Sprite, {
+    getSprite: function() {
+      return this.sprite;
+    },
+    setPositionVector3: function(v) {
+      this.sprite.position.set(v.x, v.y, v.z);
+    },
+    setPosition: function(x, y, z) {
+      this.sprite.position.set(x, y, z);
+    },
+    rendering: function(delta) {},
+    updateSprite: function(message, parameters) {
+      if (parameters === undefined)
+        parameters = {};
+      var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Arial";
+      var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 18;
+      var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 4;
+      var borderColor = parameters.hasOwnProperty("borderColor") ? parameters["borderColor"] : {
+        r: 0,
+        g: 0,
+        b: 0,
+        a: 1.0
+      };
+      var backgroundColor = parameters.hasOwnProperty("backgroundColor") ? parameters["backgroundColor"] : {
+        r: 255,
+        g: 255,
+        b: 255,
+        a: 1.0
+      };
+      var metrics = this.context.measureText(message);
+      var textWidth = metrics.width;
+      this.context.fillStyle = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
+      this.context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
+      this.context.lineWidth = borderThickness;
+      this.roundRect(this.context, borderThickness / 2, borderThickness / 2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
+      this.context.fillStyle = "rgba(0, 0, 0, 1.0)";
+      this.context.fillText(message, borderThickness, fontsize + borderThickness);
+      this.texture.needsUpdate = true;
+    },
+    makeTextSprite: function(message, parameters) {
+      if (parameters === undefined)
+        parameters = {};
+      var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Arial";
+      var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 18;
+      var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 4;
+      var borderColor = parameters.hasOwnProperty("borderColor") ? parameters["borderColor"] : {
+        r: 0,
+        g: 0,
+        b: 0,
+        a: 1.0
+      };
+      var backgroundColor = parameters.hasOwnProperty("backgroundColor") ? parameters["backgroundColor"] : {
+        r: 255,
+        g: 255,
+        b: 255,
+        a: 1.0
+      };
+      var canvas = document.createElement('canvas');
+      this.context = canvas.getContext('2d');
+      this.context.font = "Bold " + fontsize + "px " + fontface;
+      var metrics = this.context.measureText(message);
+      var textWidth = metrics.width;
+      this.context.fillStyle = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
+      this.context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
+      this.context.lineWidth = borderThickness;
+      this.roundRect(this.context, borderThickness / 2, borderThickness / 2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
+      this.context.fillStyle = "rgba(0, 0, 0, 1.0)";
+      this.context.fillText(message, borderThickness, fontsize + borderThickness);
+      this.texture = new THREE.Texture(canvas);
+      this.texture.needsUpdate = true;
+      var spriteMaterial = new THREE.SpriteMaterial({
+        map: this.texture,
+        useScreenCoordinates: false
+      });
+      var sprite = new THREE.Sprite(spriteMaterial);
+      sprite.scale.set(100, 50, 1.0);
+      return sprite;
+    },
+    roundRect: function(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+  }, {});
+  var Enemy = function Enemy() {
+    this.name = "";
+    this.maxhp = 100;
+    this.hp = 100;
+    this.maxmp = 0;
+    this.mp = 0;
+    this.maxammo = 10;
+    this.ammo = 10;
+    this.status = null;
+    this.character = null;
+    this.target_positions_array = null;
+    this.target_position_index = 0;
+    this.current_animation = "idol";
+    this.sprite = null;
+    this.y_timing = Math.floor(Math.random()) * 10;
+    this.timing = 0;
+  };
+  ($traceurRuntime.createClass)(Enemy, {
+    calcDistance: function(x1, y1, x2, y2) {
+      var a,
+          b,
+          d;
+      a = x1 - x2;
+      b = y1 - y2;
+      d = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+      return d;
+    },
+    rendering: function(delta, ground_collision_array) {
+      var target_position = new THREE.Vector3(this.target_positions_array[this.target_position_index].x, this.character.root.position.y, this.target_positions_array[this.target_position_index].z);
+      this.character.root.lookAt(target_position);
+      var distance = this.calcDistance(this.character.root.position.x, this.character.root.position.z, target_position.x, target_position.z);
+      var moveDistance = 200 * delta / 10;
+      this.character.root.translateZ(moveDistance);
+      if (distance < 10.0) {
+        if (this.target_position_index + 1 >= this.target_positions_array.length) {
+          this.target_position_index = 0;
+        } else {
+          this.target_position_index++;
+        }
+      }
+      if (this.timing == this.y_timing) {
+        var ray = new THREE.Raycaster();
+        ray.ray.direction.set(0, -1, 0);
+        var person_point = new THREE.Vector3(this.character.root.position.x, this.character.root.position.y + 200, this.character.root.position.z);
+        ray.ray.origin.copy(person_point);
+        var intersects = ray.intersectObjects(ground_collision_array);
+        if (intersects.length > 0) {
+          this.character.root.position.y = intersects[0].point.y + 8;
+        }
+      }
+      this.sprite.updateSprite(" " + this.name + " HP:" + this.hp-- + "/" + this.maxhp + " ", {
+        fontsize: 24,
+        borderColor: {
+          r: 255,
+          g: 0,
+          b: 0,
+          a: 1.0
+        },
+        backgroundColor: {
+          r: 255,
+          g: 100,
+          b: 100,
+          a: 0.8
+        }
+      });
+      this.sprite.setPosition(this.character.root.position.x, this.character.root.position.y + 30, this.character.root.position.z);
+      this.character.update(delta);
+      this.timing++;
+      if (this.timing > 10) {
+        this.timing = 0;
+      }
+    }
+  }, {});
+  var Enemies = function Enemies(nCharacters, callback_function) {
+    PXUtil.trace_func('Enemies::constructor');
+    var config = {
+      baseUrl: PXConfig._ASSETS_PATH_ + "models/ogro/",
+      body: "ogro-light.js",
+      skins: ["grok.jpg", "ogrobase.png", "arboshak.png", "ctf_r.png", "ctf_b.png", "darkam.png", "freedom.png", "gib.png", "gordogh.png", "igdosh.png", "khorne.png", "nabogro.png"],
+      weapons: [["weapon-light.js", "weapon.jpg"]],
+      animations: {
+        move: "run",
+        idle: "stand",
+        jump: "jump",
+        attack: "attack",
+        crouchMove: "cwalk",
+        crouchIdle: "cstand",
+        crouchAttach: "crattack"
+      },
+      walkSpeed: 350,
+      crouchSpeed: 175
+    };
+    var controls = {
+      moveForward: false,
+      moveBackward: false,
+      moveLeft: false,
+      moveRight: false
+    };
+    this.callback_function = callback_function;
+    this.characters = new Array();
+    this.cloneCharacterRoots = new Array();
+    this.sprites = new Array();
+    for (var i = 0; i < nCharacters; i++) {
+      var character = new THREE.MD2CharacterComplex();
+      character.scale = 1 / 3;
+      character.controls = controls;
+      var enemy = new Enemy();
+      enemy.character = character;
+      enemy.target_positions_array = new Array();
+      for (var j = 0; j < 3; j++) {
+        var x = Math.floor(Math.random() * 300) + 200;
+        var z = Math.floor(Math.random() * 300) + 600;
+        enemy.target_positions_array.push({
+          x: x,
+          z: z
+        });
+      }
+      enemy.name = "モンスター" + i;
+      var sprite = new Sprite(" " + enemy.name + " HP:" + enemy.hp + "/" + enemy.maxhp + " ", (function() {}));
+      enemy.sprite = sprite;
+      this.characters.push(enemy);
+    }
+    var baseCharacter = new THREE.MD2CharacterComplex();
+    baseCharacter.scale = 1 / 2;
+    var obj = this;
+    baseCharacter.onLoadComplete = function() {
+      for (var i = 0; i < nCharacters; i++) {
+        var cloneCharacter = obj.characters[i].character;
+        cloneCharacter.shareParts(baseCharacter);
+        cloneCharacter.enableShadows(true);
+        cloneCharacter.setWeapon(0);
+        cloneCharacter.setSkin(i);
+        cloneCharacter.frontAcceleration = 0;
+        cloneCharacter.controls.moveForward = true;
+        cloneCharacter.root.position.x = Math.floor(Math.random() * 300) + 200;
+        cloneCharacter.root.position.y = 300;
+        cloneCharacter.root.position.z = Math.floor(Math.random() * 300) + 600;
+        obj.cloneCharacterRoots.push(cloneCharacter.root);
+        obj.sprites.push(obj.characters[i].sprite.getSprite());
+      }
+      obj.callback_function(obj.cloneCharacterRoots, obj.sprites);
+    };
+    baseCharacter.loadParts(config);
+  };
+  ($traceurRuntime.createClass)(Enemies, {rendering: function(delta, ground_collision_array) {
+      for (var i = 0; i < this.characters.length; i++) {
+        this.characters[i].rendering(delta, ground_collision_array);
+      }
+    }}, {});
+  return {get Enemies() {
+      return Enemies;
+    }};
+});
 System.register("threefieldscene", [], function() {
   "use strict";
   var __moduleName = "threefieldscene";
@@ -1032,24 +1304,26 @@ System.register("threefieldscene", [], function() {
   var PXSkybox = System.get("objects/skybox");
   var PXRatamahatta = System.get("objects/ratamahatta");
   var PXDebugfloor = System.get("objects/debugfloor");
+  var PXEnemies = System.get("objects/enemies");
   var ThreefieldScene = function ThreefieldScene(renderer) {
-    var $__13 = this;
+    var $__14 = this;
     PXUtil.trace_func('ThreefieldScene::constructor');
     this.renderer;
     this.scene;
     this.camera;
     this.light;
     this.ambient;
-    this.all_items = 5;
+    this.all_items = 6;
     this.loaded_items = 0;
     this.nextScene = "own";
     this.render_target_array = new Array();
     this.clock;
     this.attack_delta = 0;
+    this.grounds_collision_array = new Array();
     this.player_mesh;
     this.renderer = renderer;
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100000);
+    this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 20000);
     this.camera.position.set(0, 150, 500);
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
@@ -1076,22 +1350,22 @@ System.register("threefieldscene", [], function() {
     this.playerController.movementSpeed = 30;
     this.keyInputControl = new THREEFIELD.KeyInputControl();
     this.keyInputControl.addEventListener('movekeyhold', (function() {
-      $__13.playerController.isWalking = true;
+      $__14.playerController.isWalking = true;
     }));
     this.keyInputControl.addEventListener('movekeyrelease', (function() {
-      $__13.playerController.isWalking = false;
+      $__14.playerController.isWalking = false;
     }));
     this.keyInputControl.addEventListener('jumpkeypress', (function() {
-      $__13.playerController.jump();
+      $__14.playerController.jump();
     }));
     this.playerController.addEventListener('startIdling', (function() {
-      $__13.user_character.setAnimation('stand');
+      $__14.user_character.setAnimation('stand');
     }));
     this.playerController.addEventListener('startWalking', (function() {
-      $__13.user_character.setAnimation('run');
+      $__14.user_character.setAnimation('run');
     }));
     this.playerController.addEventListener('startJumping', (function() {
-      $__13.user_character.setAnimation('jump');
+      $__14.user_character.setAnimation('jump');
     }));
     this.gyroscopeCameraControl = new THREEFIELD.GyroscopeCameraControl(this.camera, this.playerObjectHolder, {
       el: this.renderer.domElement,
@@ -1146,18 +1420,18 @@ System.register("threefieldscene", [], function() {
         }
       }
       for (var i = 0; i < this.render_target_array.length; i++) {
-        this.render_target_array[i].rendering(delta);
+        this.render_target_array[i].rendering(delta, this.grounds_collision_array);
       }
-      PXUtil.debug_board('delta: ' + delta + '<br>person x:' + this.playerController.object.position.x + " y:" + this.playerController.object.position.y + " z:" + this.playerController.object.position.z);
+      PXUtil.debug_board('delta: ' + delta + '<br>person x:' + this.playerController.object.position.x + " y:" + this.playerController.object.position.y + " z:" + this.playerController.object.position.z + '<br>' + 'info.memory.programs:' + this.renderer.info.memory.programs + '<br>' + 'info.memory.geometries:' + this.renderer.info.memory.geometries + '<br>' + 'info.memory.textures:' + this.renderer.info.memory.textures + '<br>' + 'info.render.calls:' + this.renderer.info.render.calls + '<br>' + 'info.render.vertices:' + this.renderer.info.render.vertices + '<br>' + 'info.render.faces:' + this.renderer.info.render.faces + '<br>' + 'info.render.points:' + this.renderer.info.render.points);
       this.renderer.render(this.scene, this.camera);
     },
     loadObjects: function() {
-      var $__13 = this;
+      var $__14 = this;
       var debugbox = new PXDebugbox.Debugbox((function(mesh) {
-        $__13.scene.add(mesh);
+        $__14.scene.add(mesh);
         var groundBody = new THREEFIELD.Collider(mesh);
-        $__13.world.add(groundBody);
-        $__13.loadedIncrements();
+        $__14.world.add(groundBody);
+        $__14.loadedIncrements();
       }));
       SHADER_LOADER.load((function(data) {
         var myVertexShader1 = data.vertexShader.vertex;
@@ -1165,55 +1439,44 @@ System.register("threefieldscene", [], function() {
         var shaderbox = new PXShaderbox.Shaderbox(myVertexShader1, myFragmentShader1, (function(mesh) {
           mesh.position.y += 70;
           mesh.position.x += 120;
-          $__13.scene.add(mesh);
-          $__13.loadedIncrements();
+          $__14.scene.add(mesh);
+          $__14.loadedIncrements();
         }));
-        $__13.render_target_array.push(shaderbox);
+        $__14.render_target_array.push(shaderbox);
       }));
-      var waterNormals = new THREE.ImageUtils.loadTexture(PXConfig._ASSETS_PATH_ + 'water/waternormals.jpg');
-      waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
-      var directionalLight = new THREE.DirectionalLight(0xffff55, 1);
-      directionalLight.position.set(-600, 300, 600);
-      this.scene.add(directionalLight);
-      this.water = new THREE.Water(this.renderer, this.camera, this.scene, {
-        textureWidth: 256,
-        textureHeight: 256,
-        waterNormals: waterNormals,
-        alpha: 0.5,
-        sunDirection: directionalLight.position.normalize(),
-        sunColor: 0xffffff,
-        waterColor: 0x001e0f,
-        betaVersion: 0,
-        side: THREE.DoubleSide,
-        distortionScale: 50.0
-      });
-      var waterMesh = new THREE.Mesh(new THREE.PlaneGeometry(2000 * 10, 2000 * 10, 100, 100), this.water.material);
-      waterMesh.position.y = -600;
-      waterMesh.add(this.water);
-      waterMesh.rotation.x = -Math.PI * 0.5;
-      this.scene.add(waterMesh);
-      var terrain = new PXTerrain.Terrain((function(mesh) {
-        $__13.scene.add(mesh);
-        $__13.loadedIncrements();
+      this.terrain = new PXTerrain.Terrain((function(mesh) {
+        $__14.scene.add(mesh);
+        $__14.loadedIncrements();
         var groundBody = new THREEFIELD.Collider(mesh);
-        $__13.world.add(groundBody);
+        $__14.world.add(groundBody);
+        $__14.grounds_collision_array.push(mesh);
       }));
       var skybox = new PXSkybox.Skybox((function(mesh) {
-        $__13.scene.add(mesh);
-        $__13.loadedIncrements();
+        $__14.scene.add(mesh);
+        $__14.loadedIncrements();
       }));
       this.user_character = new PXRatamahatta.Ratamahatta(1 / 2, (function(mesh, obj) {
         mesh.position.y -= 1;
         mesh.name = "player";
-        $__13.scene.add(mesh);
-        $__13.playerObjectHolder.add(mesh);
-        $__13.player_mesh = mesh;
-        $__13.playerController.object.position.x = 83;
-        $__13.playerController.object.position.y = 200;
-        $__13.playerController.object.position.z = 716;
-        $__13.loadedIncrements();
+        $__14.scene.add(mesh);
+        $__14.playerObjectHolder.add(mesh);
+        $__14.player_mesh = mesh;
+        $__14.playerController.object.position.x = 83;
+        $__14.playerController.object.position.y = 200;
+        $__14.playerController.object.position.z = 716;
+        $__14.loadedIncrements();
       }));
       this.render_target_array.push(this.user_character);
+      var enemies = new PXEnemies.Enemies(10, (function(meshes, sprites) {
+        for (var i = 0; i < meshes.length; i++) {
+          $__14.scene.add(meshes[i]);
+        }
+        for (var i = 0; i < sprites.length; i++) {
+          $__14.scene.add(sprites[i]);
+        }
+        $__14.loadedIncrements();
+      }));
+      this.render_target_array.push(enemies);
     },
     resize: function() {
       PXUtil.trace_func('TestScene::resize');
@@ -1300,15 +1563,15 @@ System.register("app", [], function() {
       this.stats.update();
     },
     rendering: function() {
-      var $__15 = this;
+      var $__16 = this;
       if (PXConfig._FPS_ === 60) {
         requestAnimationFrame((function() {
-          $__15.update();
+          $__16.update();
         }));
       } else {
         setTimeout((function() {
           requestAnimationFrame((function() {
-            $__15.update();
+            $__16.update();
           }));
         }), 1000 / PXConfig._FPS_);
       }
@@ -1317,21 +1580,21 @@ System.register("app", [], function() {
       }
     },
     resize: function() {
-      var $__15 = this;
+      var $__16 = this;
       PXUtil.trace_func('App::resize');
       $(window).resize((function(e) {
         var w = window.innerWidth;
         var h = window.innerHeight;
         PXUtil.trace_func('App::resize::resize w:' + w + ',h:' + h);
-        $__15.renderer.setSize(w, h);
-        $__15.currentSceneObject.resize();
+        $__16.renderer.setSize(w, h);
+        $__16.currentSceneObject.resize();
       }));
     },
     mouseevent: function() {
-      var $__15 = this;
+      var $__16 = this;
       $(document).mousedown((function(e) {
         PXUtil.trace_func('App::mouseevent::mousedown - type' + e.type);
-        $__15.currentSceneObject.mousedown(e);
+        $__16.currentSceneObject.mousedown(e);
       }));
     }
   }, {});
