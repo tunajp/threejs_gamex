@@ -1063,7 +1063,7 @@ System.register("threefieldscene", [], function() {
     this.light.shadowMapWidth = 1024;
     this.light.shadowMapHeight = 1024;
     this.light.shadowCameraNear = 10;
-    this.light.shadowCameraFar = 100;
+    this.light.shadowCameraFar = 400;
     this.light.shadowCameraFov = 30;
     this.light.shadowCameraVisible = true;
     this.renderer.shadowMapEnabled = true;
@@ -1073,6 +1073,7 @@ System.register("threefieldscene", [], function() {
     this.scene.add(this.playerObjectHolder);
     var playerRadius = 1;
     this.playerController = new THREEFIELD.CharacterController(this.playerObjectHolder, playerRadius, this.world);
+    this.playerController.movementSpeed = 30;
     this.keyInputControl = new THREEFIELD.KeyInputControl();
     this.keyInputControl.addEventListener('movekeyhold', (function() {
       $__13.playerController.isWalking = true;
@@ -1094,8 +1095,10 @@ System.register("threefieldscene", [], function() {
     }));
     this.gyroscopeCameraControl = new THREEFIELD.GyroscopeCameraControl(this.camera, this.playerObjectHolder, {
       el: this.renderer.domElement,
-      offset: new THREE.Vector3(0, 6, 0),
-      radius: 20
+      offset: new THREE.Vector3(0, 12, 0),
+      radius: 60,
+      minRadius: 20,
+      maxRadius: 100
     });
     this.loadObjects();
   };
@@ -1129,8 +1132,8 @@ System.register("threefieldscene", [], function() {
       this.player_mesh.rotation.y = THREE.Math.degToRad((360 - cameraFrontAngle) + characterFrontAngle % 360) + Math.PI;
       this.gyroscopeCameraControl.update();
       this.world.step(delta);
-      this.light.position.set(this.playerController.object.position.x, this.playerController.object.position.y + 90, this.playerController.object.position.z);
-      this.light.target.position.set(this.playerController.object.position.x, this.playerController.object.position.y - 25, this.playerController.object.position.z);
+      this.light.position.set(this.playerController.object.position.x, this.playerController.object.position.y + 300, this.playerController.object.position.z);
+      this.light.target.position.set(this.playerController.object.position.x, this.playerController.object.position.y - 100, this.playerController.object.position.z);
       if (this.attack_delta >= 0)
         this.attack_delta--;
       if (this.attack_delta < 0) {
@@ -1199,7 +1202,7 @@ System.register("threefieldscene", [], function() {
         $__13.scene.add(mesh);
         $__13.loadedIncrements();
       }));
-      this.user_character = new PXRatamahatta.Ratamahatta(1 / 10, (function(mesh, obj) {
+      this.user_character = new PXRatamahatta.Ratamahatta(1 / 2, (function(mesh, obj) {
         mesh.position.y -= 1;
         mesh.name = "player";
         $__13.scene.add(mesh);

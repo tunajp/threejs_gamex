@@ -85,7 +85,7 @@ export class ThreefieldScene
     this.light.shadowMapWidth = 1024;
     this.light.shadowMapHeight = 1024;
     this.light.shadowCameraNear = 10;
-    this.light.shadowCameraFar = 100;
+    this.light.shadowCameraFar = 400;
     this.light.shadowCameraFov = 30;
     this.light.shadowCameraVisible = true; // 影生成カメラの表示(DEBUG)
     this.renderer.shadowMapEnabled = true;
@@ -101,6 +101,7 @@ export class ThreefieldScene
     var playerRadius = 1; // 半径(物体の大きさに合わせる事)
     this.playerController = new THREEFIELD.CharacterController(this.playerObjectHolder, playerRadius, this.world);
     //this.playerController.movementSpeed = 20;
+    this.playerController.movementSpeed = 30;
 
     /*
      * KeyInputControl
@@ -131,10 +132,10 @@ export class ThreefieldScene
       this.playerObjectHolder,
       {
         el: this.renderer.domElement,
-        offset: new THREE.Vector3( 0, 6, 0 ), // eye height
-        radius: 20,
-        //minRadius: 100,
-        //maxRaduis: 1000
+        offset: new THREE.Vector3( 0, 12, 0 ), // eye height
+        radius: 60,
+        minRadius: 20,
+        maxRadius: 100
       }
     );
 
@@ -204,8 +205,8 @@ export class ThreefieldScene
     /*
      * 影用のライトの位置を自キャラの近くに移動する
      */
-    this.light.position.set(this.playerController.object.position.x, this.playerController.object.position.y + 90, this.playerController.object.position.z);
-    this.light.target.position.set(this.playerController.object.position.x, this.playerController.object.position.y-25, this.playerController.object.position.z);
+    this.light.position.set(this.playerController.object.position.x, this.playerController.object.position.y + 300, this.playerController.object.position.z);
+    this.light.target.position.set(this.playerController.object.position.x, this.playerController.object.position.y-100, this.playerController.object.position.z);
 
 
     if (this.attack_delta >= 0) this.attack_delta--;
@@ -323,7 +324,7 @@ export class ThreefieldScene
     /*
      * character
      */
-    this.user_character = new PXRatamahatta.Ratamahatta(1/10, (mesh, obj) => {
+    this.user_character = new PXRatamahatta.Ratamahatta(1/2, (mesh, obj) => {
       //mesh.position.y += 1000;
       mesh.position.y -= 1;
 
