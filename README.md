@@ -3,6 +3,13 @@ ThreeJS MySkelton Project
 description  
 [テストサイト](http://tunajp.github.io/threejs_gamex/webroot/)
 
+ビルドに必要なもの
+-----
+ruby:http://rubyinstaller.org/downloads/  
+sass:gem install sass  
+compass:gem install compass --pre  
+node.js:http://nodejs.org/  
+
 使い方(node.js)
 -----
 
