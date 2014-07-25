@@ -55,6 +55,16 @@ export class ThreefieldScene
     this.attack_delta = 0;
     /** for enemies ground collision array */
     this.grounds_collision_array = new Array();
+    /** player status */
+    this.player_status = {
+      maxhp: 100,
+      hp: 100,
+      maxmp: 100,
+      mp: 100,
+      maxammo: 100,
+      ammo: 100,
+      status: '',
+    };
 
     /** */
     this.player_mesh;
@@ -147,6 +157,19 @@ export class ThreefieldScene
      * mesh
      */
     this.loadObjects();
+
+    /*
+     * HUD
+     */
+    $(document.body).append('<div id="hud"></div>');
+    $('#hud').append('<div id="hud0"></div>');
+    $('#hud0').append('<span id="health">HP:' + this.player_status.hp + '/' + this.player_status.maxhp + '</span>');
+    $('#hud0').append('<span id="magicpoint">MP:' + this.player_status.mp + '/' + this.player_status.maxmp + '</span>');
+    $('#hud').append('<div id="hud1"></div>');
+    $('#hud1').append('<span id="ammo">AMMO:' + this.player_status.ammo + '/' + this.player_status.maxammo + '</span>');
+    $('#hud1').append('<span id="status">status:' + this.player_status.status + '</span>');
+    $('#hud').append('<div id="hud2"></div>');
+    $('#hud2').append('<span id="character_debug">debug:n/a</span>');
   }
 
   /**
@@ -155,6 +178,7 @@ export class ThreefieldScene
    */
   destructor()
   {
+    $('#hud').remove();
     this.scene = null;
     delete this.scene;
   }
@@ -227,6 +251,8 @@ export class ThreefieldScene
     for (var i=0; i<this.render_target_array.length; i++) {
       this.render_target_array[i].rendering(delta, this.grounds_collision_array);
     }
+
+    this.updateHUD();
 
     PXUtil.debug_board(
       'delta: ' + delta +
@@ -406,5 +432,17 @@ export class ThreefieldScene
       this.user_character.setAnimation('attack');
       this.attack_delta = 20;
     }
+  }
+
+  /**
+   * updateHUD method
+   */
+  updateHUD()
+  {
+    $('#health').html('HP:' + this.player_status.hp + '/' + this.player_status.maxhp);
+    $('#magicpoint').html('MP:' + this.player_status.mp + '/' + this.player_status.maxmp);
+    $('#ammo').html('AMMO:' + this.player_status.ammo + '/' + this.player_status.maxammo);
+    $('#status').html('status:' + this.player_status.status);
+    $('#character_debug').html('debug:n/a');
   }
 }

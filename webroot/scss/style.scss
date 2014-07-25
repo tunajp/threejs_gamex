@@ -80,3 +80,19 @@ body {
     color: rgba(255, 255, 255, 0.7);
 }
 
+/*
+ * HUD 
+ */
+/* storybox */
+#hud {
+    overflow: auto;
+    height: 90px;
+    width: 280px;
+    position: absolute;
+    top: 0%;
+    left: 20%; /* FPSstatがなければ0%にしたい */
+    margin-top: 0px;
+    /*margin-left: -300px;*/
+    z-index: 20;
+    color: rgba(255, 255, 255, 0.7);
+}

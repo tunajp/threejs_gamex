@@ -1320,6 +1320,15 @@ System.register("threefieldscene", [], function() {
     this.clock;
     this.attack_delta = 0;
     this.grounds_collision_array = new Array();
+    this.player_status = {
+      maxhp: 100,
+      hp: 100,
+      maxmp: 100,
+      mp: 100,
+      maxammo: 100,
+      ammo: 100,
+      status: ''
+    };
     this.player_mesh;
     this.renderer = renderer;
     this.scene = new THREE.Scene();
@@ -1375,9 +1384,19 @@ System.register("threefieldscene", [], function() {
       maxRadius: 100
     });
     this.loadObjects();
+    $(document.body).append('<div id="hud"></div>');
+    $('#hud').append('<div id="hud0"></div>');
+    $('#hud0').append('<span id="health">HP:' + this.player_status.hp + '/' + this.player_status.maxhp + '</span>');
+    $('#hud0').append('<span id="magicpoint">MP:' + this.player_status.mp + '/' + this.player_status.maxmp + '</span>');
+    $('#hud').append('<div id="hud1"></div>');
+    $('#hud1').append('<span id="ammo">AMMO:' + this.player_status.ammo + '/' + this.player_status.maxammo + '</span>');
+    $('#hud1').append('<span id="status">status:' + this.player_status.status + '</span>');
+    $('#hud').append('<div id="hud2"></div>');
+    $('#hud2').append('<span id="character_debug">debug:n/a</span>');
   };
   ($traceurRuntime.createClass)(ThreefieldScene, {
     destructor: function() {
+      $('#hud').remove();
       this.scene = null;
       delete this.scene;
     },
@@ -1422,6 +1441,7 @@ System.register("threefieldscene", [], function() {
       for (var i = 0; i < this.render_target_array.length; i++) {
         this.render_target_array[i].rendering(delta, this.grounds_collision_array);
       }
+      this.updateHUD();
       PXUtil.debug_board('delta: ' + delta + '<br>person x:' + this.playerController.object.position.x + " y:" + this.playerController.object.position.y + " z:" + this.playerController.object.position.z + '<br>' + 'info.memory.programs:' + this.renderer.info.memory.programs + '<br>' + 'info.memory.geometries:' + this.renderer.info.memory.geometries + '<br>' + 'info.memory.textures:' + this.renderer.info.memory.textures + '<br>' + 'info.render.calls:' + this.renderer.info.render.calls + '<br>' + 'info.render.vertices:' + this.renderer.info.render.vertices + '<br>' + 'info.render.faces:' + this.renderer.info.render.faces + '<br>' + 'info.render.points:' + this.renderer.info.render.points);
       this.renderer.render(this.scene, this.camera);
     },
@@ -1488,6 +1508,13 @@ System.register("threefieldscene", [], function() {
         this.user_character.setAnimation('attack');
         this.attack_delta = 20;
       }
+    },
+    updateHUD: function() {
+      $('#health').html('HP:' + this.player_status.hp + '/' + this.player_status.maxhp);
+      $('#magicpoint').html('MP:' + this.player_status.mp + '/' + this.player_status.maxmp);
+      $('#ammo').html('AMMO:' + this.player_status.ammo + '/' + this.player_status.maxammo);
+      $('#status').html('status:' + this.player_status.status);
+      $('#character_debug').html('debug:n/a');
     }
   }, {});
   return {get ThreefieldScene() {
