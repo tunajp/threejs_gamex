@@ -371,23 +371,16 @@ export class TestScene
       // デバッグ表示
       //PXUtil.debug_board('delta: ' + delta + " point.y:" + intersects[0].point.y + '<br>person x:' + person.root.position.x + " y:" + person.root.position.y + " z:" + person.root.position.z);
       PXUtil.debug_board(
-        'delta: ' + delta +
-        '<br>person x:' + person.root.position.x +
-        " y:" + person.root.position.y +
-        " z:" + person.root.position.z +
-        '<br>' +
-        'info.memory.programs:' + this.renderer.info.memory.programs +
-        '<br>' +
-        'info.memory.geometries:' + this.renderer.info.memory.geometries +
-        '<br>' +
-        'info.memory.textures:' + this.renderer.info.memory.textures +
-        '<br>' +
-        'info.render.calls:' + this.renderer.info.render.calls +
-        '<br>' +
-        'info.render.vertices:' + this.renderer.info.render.vertices +
-        '<br>' +
-        'info.render.faces:' + this.renderer.info.render.faces +
-        '<br>' +
+        'delta: ' + Math.floor(delta * 100000) / 100000 + '<br>' +
+        '<br>person x:' + Math.floor(person.root.position.x * 100000) / 100000 +
+        " y:" + Math.floor(person.root.position.y * 100000) / 100000 +
+        " z:" + Math.floor(person.root.position.z * 100000) / 100000 + '<br>' +
+        'info.memory.programs:' + this.renderer.info.memory.programs + '<br>' +
+        'info.memory.geometries:' + this.renderer.info.memory.geometries + '<br>' +
+        'info.memory.textures:' + this.renderer.info.memory.textures + '<br>' +
+        'info.render.calls:' + this.renderer.info.render.calls + '<br>' +
+        'info.render.vertices:' + this.renderer.info.render.vertices + '<br>' +
+        'info.render.faces:' + this.renderer.info.render.faces + '<br>' +
         'info.render.points:' + this.renderer.info.render.points
         );
 

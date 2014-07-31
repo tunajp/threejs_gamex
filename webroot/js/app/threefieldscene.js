@@ -255,23 +255,16 @@ export class ThreefieldScene
     this.updateHUD();
 
     PXUtil.debug_board(
-      'delta: ' + delta +
-      '<br>person x:' + this.playerController.object.position.x +
-      " y:" + this.playerController.object.position.y +
-      " z:" + this.playerController.object.position.z +
-      '<br>' +
-      'info.memory.programs:' + this.renderer.info.memory.programs +
-      '<br>' +
-      'info.memory.geometries:' + this.renderer.info.memory.geometries +
-      '<br>' +
-      'info.memory.textures:' + this.renderer.info.memory.textures +
-      '<br>' +
-      'info.render.calls:' + this.renderer.info.render.calls +
-      '<br>' +
-      'info.render.vertices:' + this.renderer.info.render.vertices +
-      '<br>' +
-      'info.render.faces:' + this.renderer.info.render.faces +
-      '<br>' +
+      'delta: ' + Math.floor(delta * 100000) / 100000 + '<br>' +
+      '<br>person x:' + Math.floor(this.playerController.object.position.x * 100000) / 100000 +
+      " y:" + Math.floor(this.playerController.object.position.y * 100000) / 100000 +
+      " z:" + Math.floor(this.playerController.object.position.z * 100000) / 100000 + '<br>' +
+      'info.memory.programs:' + this.renderer.info.memory.programs + '<br>' +
+      'info.memory.geometries:' + this.renderer.info.memory.geometries + '<br>' +
+      'info.memory.textures:' + this.renderer.info.memory.textures + '<br>' +
+      'info.render.calls:' + this.renderer.info.render.calls + '<br>' +
+      'info.render.vertices:' + this.renderer.info.render.vertices + '<br>' +
+      'info.render.faces:' + this.renderer.info.render.faces + '<br>' +
       'info.render.points:' + this.renderer.info.render.points
       );
 
