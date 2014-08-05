@@ -5,12 +5,12 @@
  */
 
 
-module PXUtil from './util';
-module PXConfig from './config';
-module PXStartScene from './startscene';
-module PXOpeningScene from './openingscene';
-module PXTestScene from './testscene';
-module PXThreefieldScene from './threefieldscene';
+import * as PXUtil from './util';
+import * as PXConfig from './config';
+import * as PXStartScene from './startscene';
+import * as PXOpeningScene from './openingscene';
+import * as PXTestScene from './testscene';
+import * as PXThreefieldScene from './threefieldscene';
 
 /**
  * Application class

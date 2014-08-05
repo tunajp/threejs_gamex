@@ -6,9 +6,9 @@
  * @author Mitsunori Inaba <m-inaba@phoenixdesign.jp>
  */
 
-module PXUtil from './util';
-module PXConfig from './config';
-module PXRatamahatta from './objects/ratamahatta';
+import * as PXUtil from './util';
+import * as PXConfig from './config';
+import * as PXRatamahatta from './objects/ratamahatta';
 
 /**
  * OpeningScene class

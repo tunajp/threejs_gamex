@@ -4,15 +4,15 @@
  * @author Mitsunori Inaba <m-inaba@phoenixdesign.jp>
  */
 
-module PXUtil from './util';
-module PXConfig from './config';
-module PXDebugbox from './objects/debugbox';
-module PXShaderbox from './objects/shaderbox';
-module PXTerrain from './objects/terrain';
-module PXSkybox from './objects/skybox';
-module PXRatamahatta from './objects/ratamahatta';
-module PXDebugfloor from './objects/debugfloor';
-module PXEnemies from './objects/enemies';
+import * as PXUtil from './util';
+import * as PXConfig from './config';
+import * as PXDebugbox from './objects/debugbox';
+import * as PXShaderbox from './objects/shaderbox';
+import * as PXTerrain from './objects/terrain';
+import * as PXSkybox from './objects/skybox';
+import * as PXRatamahatta from './objects/ratamahatta';
+import * as PXDebugfloor from './objects/debugfloor';
+import * as PXEnemies from './objects/enemies';
 
 //threefield.jsで以下修正
 //var jumpMaxDuration = 700;//1000;
