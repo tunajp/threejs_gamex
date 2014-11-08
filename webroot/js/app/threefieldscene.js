@@ -235,6 +235,7 @@ export class ThreefieldScene
      */
     this.light.position.set(this.playerController.object.position.x, this.playerController.object.position.y + 300, this.playerController.object.position.z);
     this.light.target.position.set(this.playerController.object.position.x, this.playerController.object.position.y-100, this.playerController.object.position.z);
+    this.light.target.updateMatrixWorld(); // https://github.com/mrdoob/three.js/issues/5555
 
 
     if (this.attack_delta >= 0) this.attack_delta--;

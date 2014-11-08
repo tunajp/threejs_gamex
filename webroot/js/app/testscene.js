@@ -389,6 +389,8 @@ export class TestScene
        */
       this.light.position.set(person.root.position.x, person.root.position.y + 1000, person.root.position.z);
       this.light.target.position.set(person.root.position.x, person.root.position.y-25, person.root.position.z);
+      this.light.target.updateMatrixWorld(); // https://github.com/mrdoob/three.js/issues/5555
+
 
       {
         if (person.root.position.x >=50 && person.root.position.x <=100

@@ -873,6 +873,7 @@ System.register("testscene", [], function() {
         PXUtil.debug_board('delta: ' + Math.floor(delta * 100000) / 100000 + '<br>' + '<br>person x:' + Math.floor(person.root.position.x * 100000) / 100000 + " y:" + Math.floor(person.root.position.y * 100000) / 100000 + " z:" + Math.floor(person.root.position.z * 100000) / 100000 + '<br>' + 'info.memory.programs:' + this.renderer.info.memory.programs + '<br>' + 'info.memory.geometries:' + this.renderer.info.memory.geometries + '<br>' + 'info.memory.textures:' + this.renderer.info.memory.textures + '<br>' + 'info.render.calls:' + this.renderer.info.render.calls + '<br>' + 'info.render.vertices:' + this.renderer.info.render.vertices + '<br>' + 'info.render.faces:' + this.renderer.info.render.faces + '<br>' + 'info.render.points:' + this.renderer.info.render.points);
         this.light.position.set(person.root.position.x, person.root.position.y + 1000, person.root.position.z);
         this.light.target.position.set(person.root.position.x, person.root.position.y - 25, person.root.position.z);
+        this.light.target.updateMatrixWorld();
         {
           if (person.root.position.x >= 50 && person.root.position.x <= 100 && person.root.position.z >= 500 && person.root.position.z <= 800) {
             this.nextScene = "threefieldscene";
@@ -1461,6 +1462,7 @@ System.register("threefieldscene", [], function() {
       this.world.step(delta);
       this.light.position.set(this.playerController.object.position.x, this.playerController.object.position.y + 300, this.playerController.object.position.z);
       this.light.target.position.set(this.playerController.object.position.x, this.playerController.object.position.y - 100, this.playerController.object.position.z);
+      this.light.target.updateMatrixWorld();
       if (this.attack_delta >= 0)
         this.attack_delta--;
       if (this.attack_delta < 0) {
