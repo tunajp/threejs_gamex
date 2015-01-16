@@ -1,4 +1,4 @@
-System.register("config", [], function() {
+System.registerModule("config", [], function() {
   "use strict";
   var __moduleName = "config";
   var _DEBUG_MODE_ = true;
@@ -16,29 +16,32 @@ System.register("config", [], function() {
     }
   };
 });
-System.register("util", [], function() {
+System.registerModule("util", [], function() {
   "use strict";
   var __moduleName = "util";
   var PXConfig = System.get("config");
   function trace_func(str) {
     if (PXConfig._DEBUG_MODE_) {
       var d = new Date();
-      var hh = d.getHours();
-      var mm = d.getMinutes();
-      var ss = d.getSeconds();
-      var dd = d.getMilliseconds();
+      var hh = pad(d.getHours());
+      var mm = pad(d.getMinutes());
+      var ss = pad(d.getSeconds());
+      var dd = pad(d.getMilliseconds());
       var log_time = hh + ":" + mm + ":" + ss + ":" + dd;
       console.log(log_time + " " + str);
     }
+  }
+  function pad(n) {
+    return ("0" + n).slice(-2);
   }
   function debug_board(str) {
     'use strict';
     if (PXConfig._DEBUG_MODE_) {
       var d = new Date();
-      var hh = d.getHours();
-      var mm = d.getMinutes();
-      var ss = d.getSeconds();
-      var dd = d.getMilliseconds();
+      var hh = pad(d.getHours());
+      var mm = pad(d.getMinutes());
+      var ss = pad(d.getSeconds());
+      var dd = pad(d.getMilliseconds());
       var log_time = hh + ":" + mm + ":" + ss + ":" + dd;
       $('#debug_board').html(log_time + ' ' + str);
     }
@@ -73,7 +76,7 @@ System.register("util", [], function() {
   }
   var Hoge = function Hoge() {};
   ($traceurRuntime.createClass)(Hoge, {hoge: function(x) {
-      console.log('Hoge::hoge');
+      console.log('Hoge::hoge ' + x);
     }}, {});
   function confirmDialog(message, title, buttonok, buttoncancel, response) {
     var _dlg = $('<div>' + message + '</div>');
@@ -179,7 +182,7 @@ System.register("util", [], function() {
     }
   };
 });
-System.register("objects/ratamahatta", [], function() {
+System.registerModule("objects/ratamahatta", [], function() {
   "use strict";
   var __moduleName = "objects/ratamahatta";
   var PXUtil = System.get("util");
@@ -231,7 +234,7 @@ System.register("objects/ratamahatta", [], function() {
       return Ratamahatta;
     }};
 });
-System.register("openingscene", [], function() {
+System.registerModule("openingscene", [], function() {
   "use strict";
   var __moduleName = "openingscene";
   var PXUtil = System.get("util");
@@ -316,11 +319,11 @@ System.register("openingscene", [], function() {
       this.renderer.render(this.scene, this.camera);
     },
     loadObjects: function() {
-      var $__2 = this;
+      var $__0 = this;
       this.user_character = new PXRatamahatta.Ratamahatta(1, (function(mesh, obj) {
         mesh.name = "player";
-        $__2.scene.add(mesh);
-        $__2.loadedIncrements();
+        $__0.scene.add(mesh);
+        $__0.loadedIncrements();
       }));
       this.render_target_array.push(this.user_character);
     },
@@ -337,13 +340,13 @@ System.register("openingscene", [], function() {
       return OpeningScene;
     }};
 });
-System.register("startscene", [], function() {
+System.registerModule("startscene", [], function() {
   "use strict";
   var __moduleName = "startscene";
   var PXUtil = System.get("util");
   var PXConfig = System.get("config");
   var StartScene = function StartScene(renderer) {
-    var $__4 = this;
+    var $__0 = this;
     PXUtil.trace_func('StartScene::constructor');
     this.renderer;
     this.scene;
@@ -363,7 +366,7 @@ System.register("startscene", [], function() {
     $('#startscene_mainbox').append('<p id="startscene_load">load</p>');
     $('#startscene_mainbox').append('<p id="startscene_config">config</p>');
     $('#startscene_start').on('click', (function() {
-      $__4.start();
+      $__0.start();
     }));
     PXUtil.debug_board('complete');
   };
@@ -403,7 +406,7 @@ System.register("startscene", [], function() {
       return StartScene;
     }};
 });
-System.register("objects/debugbox", [], function() {
+System.registerModule("objects/debugbox", [], function() {
   "use strict";
   var __moduleName = "objects/debugbox";
   var PXUtil = System.get("util");
@@ -423,7 +426,7 @@ System.register("objects/debugbox", [], function() {
       return Debugbox;
     }};
 });
-System.register("objects/shaderbox", [], function() {
+System.registerModule("objects/shaderbox", [], function() {
   "use strict";
   var __moduleName = "objects/shaderbox";
   var PXUtil = System.get("util");
@@ -431,7 +434,7 @@ System.register("objects/shaderbox", [], function() {
   var Shaderbox = function Shaderbox(myVertexShader1, myFragmentShader1, callback_function) {
     PXUtil.trace_func('Shaderbox::constructor');
     this.callback_function = callback_function;
-    var baseTexture = new THREE.ImageUtils.loadTexture(PXConfig._ASSETS_PATH_ + 'cover.png');
+    var baseTexture = new THREE.ImageUtils.loadTexture(PXConfig._ASSETS_PATH_ + 'Three.js-code-example.jpg');
     var sepia = true;
     var sepia_value = false;
     var grayscale_value = false;
@@ -476,7 +479,7 @@ System.register("objects/shaderbox", [], function() {
       return Shaderbox;
     }};
 });
-System.register("objects/skybox", [], function() {
+System.registerModule("objects/skybox", [], function() {
   "use strict";
   var __moduleName = "objects/skybox";
   var PXUtil = System.get("util");
@@ -519,7 +522,7 @@ System.register("objects/skybox", [], function() {
       return Skybox;
     }};
 });
-System.register("objects/terrain", [], function() {
+System.registerModule("objects/terrain", [], function() {
   "use strict";
   var __moduleName = "objects/terrain";
   var PXUtil = System.get("util");
@@ -622,7 +625,7 @@ System.register("objects/terrain", [], function() {
       return Terrain;
     }};
 });
-System.register("testscene", [], function() {
+System.registerModule("testscene", [], function() {
   "use strict";
   var __moduleName = "testscene";
   var PXUtil = System.get("util");
@@ -709,7 +712,7 @@ System.register("testscene", [], function() {
       }
       var delta = this.clock.getDelta();
       if (delta > 1.0)
-        return;
+        return ;
       {
         if (this.attack_delta >= 0)
           this.attack_delta--;
@@ -927,21 +930,21 @@ System.register("testscene", [], function() {
       return false;
     },
     loadObjects: function() {
-      var $__10 = this;
+      var $__0 = this;
       var debugbox = new PXDebugbox.Debugbox((function(mesh) {
         mesh.position.y += 70;
-        $__10.scene.add(mesh);
-        $__10.loadedIncrements();
-        $__10.grounds_collision_array.push(mesh);
+        $__0.scene.add(mesh);
+        $__0.loadedIncrements();
+        $__0.grounds_collision_array.push(mesh);
       }));
       this.render_target_array.push(debugbox);
       var debugbox2 = new PXDebugbox.Debugbox((function(mesh) {
         mesh.position.x = 83;
         mesh.position.y = 190;
         mesh.position.z = 716;
-        $__10.scene.add(mesh);
-        $__10.loadedIncrements();
-        $__10.walls_collision_array.push(mesh);
+        $__0.scene.add(mesh);
+        $__0.loadedIncrements();
+        $__0.walls_collision_array.push(mesh);
       }));
       SHADER_LOADER.load((function(data) {
         var myVertexShader1 = data.vertexShader.vertex;
@@ -949,11 +952,11 @@ System.register("testscene", [], function() {
         var shaderbox = new PXShaderbox.Shaderbox(myVertexShader1, myFragmentShader1, (function(mesh) {
           mesh.position.y += 70;
           mesh.position.x += 120;
-          $__10.scene.add(mesh);
-          $__10.loadedIncrements();
-          $__10.grounds_collision_array.push(mesh);
+          $__0.scene.add(mesh);
+          $__0.loadedIncrements();
+          $__0.grounds_collision_array.push(mesh);
         }));
-        $__10.render_target_array.push(shaderbox);
+        $__0.render_target_array.push(shaderbox);
       }));
       var waterNormals = new THREE.ImageUtils.loadTexture(PXConfig._ASSETS_PATH_ + 'water/waternormals.jpg');
       waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
@@ -978,24 +981,24 @@ System.register("testscene", [], function() {
       waterMesh.rotation.x = -Math.PI * 0.5;
       this.scene.add(waterMesh);
       var terrain = new PXTerrain.Terrain((function(mesh) {
-        $__10.scene.add(mesh);
-        $__10.loadedIncrements();
-        $__10.grounds_collision_array.push(mesh);
+        $__0.scene.add(mesh);
+        $__0.loadedIncrements();
+        $__0.grounds_collision_array.push(mesh);
       }));
       var skybox = new PXSkybox.Skybox((function(mesh) {
-        $__10.scene.add(mesh);
-        $__10.loadedIncrements();
+        $__0.scene.add(mesh);
+        $__0.loadedIncrements();
       }));
       this.user_character = new PXRatamahatta.Ratamahatta(1, (function(mesh, obj) {
         mesh.position.y += 1000;
         mesh.name = "player";
-        $__10.scene.add(mesh);
-        $__10.camera.position.z = -50;
-        $__10.camera.position.y = 30;
-        $__10.camera.lookAt(new THREE.Vector3(0, 20, 0));
-        mesh.add($__10.camera);
+        $__0.scene.add(mesh);
+        $__0.camera.position.z = -50;
+        $__0.camera.position.y = 30;
+        $__0.camera.lookAt(new THREE.Vector3(0, 20, 0));
+        mesh.add($__0.camera);
         mesh.velocity = new THREE.Vector3(0, 0, 0);
-        $__10.loadedIncrements();
+        $__0.loadedIncrements();
       }));
       this.render_target_array.push(this.user_character);
     },
@@ -1038,7 +1041,7 @@ System.register("testscene", [], function() {
       return TestScene;
     }};
 });
-System.register("objects/debugfloor", [], function() {
+System.registerModule("objects/debugfloor", [], function() {
   "use strict";
   var __moduleName = "objects/debugfloor";
   var PXUtil = System.get("util");
@@ -1056,7 +1059,7 @@ System.register("objects/debugfloor", [], function() {
       return Debugfloor;
     }};
 });
-System.register("objects/enemies", [], function() {
+System.registerModule("objects/enemies", [], function() {
   "use strict";
   var __moduleName = "objects/enemies";
   var PXUtil = System.get("util");
@@ -1328,7 +1331,7 @@ System.register("objects/enemies", [], function() {
       return Enemies;
     }};
 });
-System.register("threefieldscene", [], function() {
+System.registerModule("threefieldscene", [], function() {
   "use strict";
   var __moduleName = "threefieldscene";
   var PXUtil = System.get("util");
@@ -1341,7 +1344,7 @@ System.register("threefieldscene", [], function() {
   var PXDebugfloor = System.get("objects/debugfloor");
   var PXEnemies = System.get("objects/enemies");
   var ThreefieldScene = function ThreefieldScene(renderer) {
-    var $__14 = this;
+    var $__0 = this;
     PXUtil.trace_func('ThreefieldScene::constructor');
     this.renderer;
     this.scene;
@@ -1394,22 +1397,22 @@ System.register("threefieldscene", [], function() {
     this.playerController.movementSpeed = 30;
     this.keyInputControl = new THREEFIELD.KeyInputControl();
     this.keyInputControl.addEventListener('movekeyhold', (function() {
-      $__14.playerController.isWalking = true;
+      $__0.playerController.isWalking = true;
     }));
     this.keyInputControl.addEventListener('movekeyrelease', (function() {
-      $__14.playerController.isWalking = false;
+      $__0.playerController.isWalking = false;
     }));
     this.keyInputControl.addEventListener('jumpkeypress', (function() {
-      $__14.playerController.jump();
+      $__0.playerController.jump();
     }));
     this.playerController.addEventListener('startIdling', (function() {
-      $__14.user_character.setAnimation('stand');
+      $__0.user_character.setAnimation('stand');
     }));
     this.playerController.addEventListener('startWalking', (function() {
-      $__14.user_character.setAnimation('run');
+      $__0.user_character.setAnimation('run');
     }));
     this.playerController.addEventListener('startJumping', (function() {
-      $__14.user_character.setAnimation('jump');
+      $__0.user_character.setAnimation('jump');
     }));
     this.gyroscopeCameraControl = new THREEFIELD.GyroscopeCameraControl(this.camera, this.playerObjectHolder, {
       el: this.renderer.domElement,
@@ -1482,12 +1485,12 @@ System.register("threefieldscene", [], function() {
       this.renderer.render(this.scene, this.camera);
     },
     loadObjects: function() {
-      var $__14 = this;
+      var $__0 = this;
       var debugbox = new PXDebugbox.Debugbox((function(mesh) {
-        $__14.scene.add(mesh);
+        $__0.scene.add(mesh);
         var groundBody = new THREEFIELD.Collider(mesh);
-        $__14.world.add(groundBody);
-        $__14.loadedIncrements();
+        $__0.world.add(groundBody);
+        $__0.loadedIncrements();
       }));
       SHADER_LOADER.load((function(data) {
         var myVertexShader1 = data.vertexShader.vertex;
@@ -1495,42 +1498,42 @@ System.register("threefieldscene", [], function() {
         var shaderbox = new PXShaderbox.Shaderbox(myVertexShader1, myFragmentShader1, (function(mesh) {
           mesh.position.y += 70;
           mesh.position.x += 120;
-          $__14.scene.add(mesh);
-          $__14.loadedIncrements();
+          $__0.scene.add(mesh);
+          $__0.loadedIncrements();
         }));
-        $__14.render_target_array.push(shaderbox);
+        $__0.render_target_array.push(shaderbox);
       }));
       this.terrain = new PXTerrain.Terrain((function(mesh) {
-        $__14.scene.add(mesh);
-        $__14.loadedIncrements();
+        $__0.scene.add(mesh);
+        $__0.loadedIncrements();
         var groundBody = new THREEFIELD.Collider(mesh);
-        $__14.world.add(groundBody);
-        $__14.grounds_collision_array.push(mesh);
+        $__0.world.add(groundBody);
+        $__0.grounds_collision_array.push(mesh);
       }));
       var skybox = new PXSkybox.Skybox((function(mesh) {
-        $__14.scene.add(mesh);
-        $__14.loadedIncrements();
+        $__0.scene.add(mesh);
+        $__0.loadedIncrements();
       }));
       this.user_character = new PXRatamahatta.Ratamahatta(1 / 2, (function(mesh, obj) {
         mesh.position.y -= 1;
         mesh.name = "player";
-        $__14.scene.add(mesh);
-        $__14.playerObjectHolder.add(mesh);
-        $__14.player_mesh = mesh;
-        $__14.playerController.object.position.x = 83;
-        $__14.playerController.object.position.y = 200;
-        $__14.playerController.object.position.z = 716;
-        $__14.loadedIncrements();
+        $__0.scene.add(mesh);
+        $__0.playerObjectHolder.add(mesh);
+        $__0.player_mesh = mesh;
+        $__0.playerController.object.position.x = 83;
+        $__0.playerController.object.position.y = 200;
+        $__0.playerController.object.position.z = 716;
+        $__0.loadedIncrements();
       }));
       this.render_target_array.push(this.user_character);
       var enemies = new PXEnemies.Enemies(10, (function(meshes, sprites) {
         for (var i = 0; i < meshes.length; i++) {
-          $__14.scene.add(meshes[i]);
+          $__0.scene.add(meshes[i]);
         }
         for (var i = 0; i < sprites.length; i++) {
-          $__14.scene.add(sprites[i]);
+          $__0.scene.add(sprites[i]);
         }
-        $__14.loadedIncrements();
+        $__0.loadedIncrements();
       }));
       this.render_target_array.push(enemies);
     },
@@ -1557,9 +1560,9 @@ System.register("threefieldscene", [], function() {
       return ThreefieldScene;
     }};
 });
-System.register("app", [], function() {
+System.registerModule("app.js", [], function() {
   "use strict";
-  var __moduleName = "app";
+  var __moduleName = "app.js";
   var PXUtil = System.get("util");
   var PXConfig = System.get("config");
   var PXStartScene = System.get("startscene");
@@ -1629,15 +1632,15 @@ System.register("app", [], function() {
       this.stats.update();
     },
     rendering: function() {
-      var $__16 = this;
+      var $__0 = this;
       if (PXConfig._FPS_ === 60) {
         requestAnimationFrame((function() {
-          $__16.update();
+          $__0.update();
         }));
       } else {
         setTimeout((function() {
           requestAnimationFrame((function() {
-            $__16.update();
+            $__0.update();
           }));
         }), 1000 / PXConfig._FPS_);
       }
@@ -1646,21 +1649,21 @@ System.register("app", [], function() {
       }
     },
     resize: function() {
-      var $__16 = this;
+      var $__0 = this;
       PXUtil.trace_func('App::resize');
       $(window).resize((function(e) {
         var w = window.innerWidth;
         var h = window.innerHeight;
         PXUtil.trace_func('App::resize::resize w:' + w + ',h:' + h);
-        $__16.renderer.setSize(w, h);
-        $__16.currentSceneObject.resize();
+        $__0.renderer.setSize(w, h);
+        $__0.currentSceneObject.resize();
       }));
     },
     mouseevent: function() {
-      var $__16 = this;
+      var $__0 = this;
       $(document).mousedown((function(e) {
         PXUtil.trace_func('App::mouseevent::mousedown - type' + e.type);
-        $__16.currentSceneObject.mousedown(e);
+        $__0.currentSceneObject.mousedown(e);
       }));
     }
   }, {});
@@ -1673,4 +1676,4 @@ System.register("app", [], function() {
   }));
   return {};
 });
-System.get("app" + '');
+System.get("app.js" + '');
