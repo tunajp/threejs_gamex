@@ -4,15 +4,15 @@
  * @author Mitsunori Inaba <m-inaba@phoenixdesign.jp>
  */
 
-import * as PXUtil from './util';
-import * as PXConfig from './config';
-import * as PXDebugbox from './objects/debugbox';
-import * as PXShaderbox from './objects/shaderbox';
-import * as PXTerrain from './objects/terrain';
-import * as PXSkybox from './objects/skybox';
-import * as PXRatamahatta from './objects/ratamahatta';
-import * as PXDebugfloor from './objects/debugfloor';
-import * as PXEnemies from './objects/enemies';
+import * as PXUtil from './util.js';
+import * as PXConfig from './config.js';
+import * as PXDebugbox from './objects/debugbox.js';
+import * as PXShaderbox from './objects/shaderbox.js';
+import * as PXTerrain from './objects/terrain.js';
+import * as PXSkybox from './objects/skybox.js';
+import * as PXRatamahatta from './objects/ratamahatta.js';
+import * as PXDebugfloor from './objects/debugfloor.js';
+import * as PXEnemies from './objects/enemies.js';
 
 //threefield.jsで以下修正
 //var jumpMaxDuration = 700;//1000;

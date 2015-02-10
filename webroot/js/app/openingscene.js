@@ -6,9 +6,9 @@
  * @author Mitsunori Inaba <m-inaba@phoenixdesign.jp>
  */
 
-import * as PXUtil from './util';
-import * as PXConfig from './config';
-import * as PXRatamahatta from './objects/ratamahatta';
+import * as PXUtil from './util.js';
+import * as PXConfig from './config.js';
+import * as PXRatamahatta from './objects/ratamahatta.js';
 
 /**
  * OpeningScene class

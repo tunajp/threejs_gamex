@@ -1,6 +1,6 @@
-System.registerModule("config", [], function() {
+System.registerModule("config.js", [], function() {
   "use strict";
-  var __moduleName = "config";
+  var __moduleName = "config.js";
   var _DEBUG_MODE_ = true;
   var _FPS_ = 60;
   var _ASSETS_PATH_ = "js/app/assets/";
@@ -16,10 +16,10 @@ System.registerModule("config", [], function() {
     }
   };
 });
-System.registerModule("util", [], function() {
+System.registerModule("util.js", [], function() {
   "use strict";
-  var __moduleName = "util";
-  var PXConfig = System.get("config");
+  var __moduleName = "util.js";
+  var PXConfig = System.get("config.js");
   function trace_func(str) {
     if (PXConfig._DEBUG_MODE_) {
       var d = new Date();
@@ -182,11 +182,11 @@ System.registerModule("util", [], function() {
     }
   };
 });
-System.registerModule("objects/ratamahatta", [], function() {
+System.registerModule("objects/ratamahatta.js", [], function() {
   "use strict";
-  var __moduleName = "objects/ratamahatta";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
+  var __moduleName = "objects/ratamahatta.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
   var Ratamahatta = function Ratamahatta(scale, callback_function) {
     PXUtil.trace_func('Ratamahatta::constructor');
     this.cur_animation = null;
@@ -234,12 +234,12 @@ System.registerModule("objects/ratamahatta", [], function() {
       return Ratamahatta;
     }};
 });
-System.registerModule("openingscene", [], function() {
+System.registerModule("openingscene.js", [], function() {
   "use strict";
-  var __moduleName = "openingscene";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
-  var PXRatamahatta = System.get("objects/ratamahatta");
+  var __moduleName = "openingscene.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
+  var PXRatamahatta = System.get("objects/ratamahatta.js");
   var OpeningScene = function OpeningScene(renderer) {
     PXUtil.trace_func('OpeningScene::constructor');
     this.renderer;
@@ -340,11 +340,11 @@ System.registerModule("openingscene", [], function() {
       return OpeningScene;
     }};
 });
-System.registerModule("startscene", [], function() {
+System.registerModule("startscene.js", [], function() {
   "use strict";
-  var __moduleName = "startscene";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
+  var __moduleName = "startscene.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
   var StartScene = function StartScene(renderer) {
     var $__0 = this;
     PXUtil.trace_func('StartScene::constructor');
@@ -406,11 +406,11 @@ System.registerModule("startscene", [], function() {
       return StartScene;
     }};
 });
-System.registerModule("objects/debugbox", [], function() {
+System.registerModule("objects/debugbox.js", [], function() {
   "use strict";
-  var __moduleName = "objects/debugbox";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
+  var __moduleName = "objects/debugbox.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
   var Debugbox = function Debugbox(callback_function) {
     PXUtil.trace_func('Debugbox::constructor');
     this.callback_function = callback_function;
@@ -426,11 +426,11 @@ System.registerModule("objects/debugbox", [], function() {
       return Debugbox;
     }};
 });
-System.registerModule("objects/shaderbox", [], function() {
+System.registerModule("objects/shaderbox.js", [], function() {
   "use strict";
-  var __moduleName = "objects/shaderbox";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
+  var __moduleName = "objects/shaderbox.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
   var Shaderbox = function Shaderbox(myVertexShader1, myFragmentShader1, callback_function) {
     PXUtil.trace_func('Shaderbox::constructor');
     this.callback_function = callback_function;
@@ -479,11 +479,11 @@ System.registerModule("objects/shaderbox", [], function() {
       return Shaderbox;
     }};
 });
-System.registerModule("objects/skybox", [], function() {
+System.registerModule("objects/skybox.js", [], function() {
   "use strict";
-  var __moduleName = "objects/skybox";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
+  var __moduleName = "objects/skybox.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
   var Skybox = function Skybox(callback_function) {
     PXUtil.trace_func('Skybox::constructor');
     this.callback_function = callback_function;
@@ -522,11 +522,11 @@ System.registerModule("objects/skybox", [], function() {
       return Skybox;
     }};
 });
-System.registerModule("objects/terrain", [], function() {
+System.registerModule("objects/terrain.js", [], function() {
   "use strict";
-  var __moduleName = "objects/terrain";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
+  var __moduleName = "objects/terrain.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
   var Terrain = function Terrain(callback_function) {
     PXUtil.trace_func('Terrain::constructor');
     this.mesh;
@@ -625,16 +625,16 @@ System.registerModule("objects/terrain", [], function() {
       return Terrain;
     }};
 });
-System.registerModule("testscene", [], function() {
+System.registerModule("testscene.js", [], function() {
   "use strict";
-  var __moduleName = "testscene";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
-  var PXDebugbox = System.get("objects/debugbox");
-  var PXShaderbox = System.get("objects/shaderbox");
-  var PXTerrain = System.get("objects/terrain");
-  var PXSkybox = System.get("objects/skybox");
-  var PXRatamahatta = System.get("objects/ratamahatta");
+  var __moduleName = "testscene.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
+  var PXDebugbox = System.get("objects/debugbox.js");
+  var PXShaderbox = System.get("objects/shaderbox.js");
+  var PXTerrain = System.get("objects/terrain.js");
+  var PXSkybox = System.get("objects/skybox.js");
+  var PXRatamahatta = System.get("objects/ratamahatta.js");
   var _TEST_CONTROLLER_ = true;
   var _CAN_JUMP_ = false;
   var TestScene = function TestScene(renderer) {
@@ -1041,11 +1041,11 @@ System.registerModule("testscene", [], function() {
       return TestScene;
     }};
 });
-System.registerModule("objects/debugfloor", [], function() {
+System.registerModule("objects/debugfloor.js", [], function() {
   "use strict";
-  var __moduleName = "objects/debugfloor";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
+  var __moduleName = "objects/debugfloor.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
   var Debugfloor = function Debugfloor(callback_function) {
     PXUtil.trace_func('Debugbox::constructor');
     this.callback_function = callback_function;
@@ -1059,11 +1059,11 @@ System.registerModule("objects/debugfloor", [], function() {
       return Debugfloor;
     }};
 });
-System.registerModule("objects/enemies", [], function() {
+System.registerModule("objects/enemies.js", [], function() {
   "use strict";
-  var __moduleName = "objects/enemies";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
+  var __moduleName = "objects/enemies.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
   var Sprite = function Sprite(message, callback_function) {
     PXUtil.trace_func('Sprite::constructor');
     this.callback_function = callback_function;
@@ -1331,18 +1331,18 @@ System.registerModule("objects/enemies", [], function() {
       return Enemies;
     }};
 });
-System.registerModule("threefieldscene", [], function() {
+System.registerModule("threefieldscene.js", [], function() {
   "use strict";
-  var __moduleName = "threefieldscene";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
-  var PXDebugbox = System.get("objects/debugbox");
-  var PXShaderbox = System.get("objects/shaderbox");
-  var PXTerrain = System.get("objects/terrain");
-  var PXSkybox = System.get("objects/skybox");
-  var PXRatamahatta = System.get("objects/ratamahatta");
-  var PXDebugfloor = System.get("objects/debugfloor");
-  var PXEnemies = System.get("objects/enemies");
+  var __moduleName = "threefieldscene.js";
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
+  var PXDebugbox = System.get("objects/debugbox.js");
+  var PXShaderbox = System.get("objects/shaderbox.js");
+  var PXTerrain = System.get("objects/terrain.js");
+  var PXSkybox = System.get("objects/skybox.js");
+  var PXRatamahatta = System.get("objects/ratamahatta.js");
+  var PXDebugfloor = System.get("objects/debugfloor.js");
+  var PXEnemies = System.get("objects/enemies.js");
   var ThreefieldScene = function ThreefieldScene(renderer) {
     var $__0 = this;
     PXUtil.trace_func('ThreefieldScene::constructor');
@@ -1563,12 +1563,12 @@ System.registerModule("threefieldscene", [], function() {
 System.registerModule("app.js", [], function() {
   "use strict";
   var __moduleName = "app.js";
-  var PXUtil = System.get("util");
-  var PXConfig = System.get("config");
-  var PXStartScene = System.get("startscene");
-  var PXOpeningScene = System.get("openingscene");
-  var PXTestScene = System.get("testscene");
-  var PXThreefieldScene = System.get("threefieldscene");
+  var PXUtil = System.get("util.js");
+  var PXConfig = System.get("config.js");
+  var PXStartScene = System.get("startscene.js");
+  var PXOpeningScene = System.get("openingscene.js");
+  var PXTestScene = System.get("testscene.js");
+  var PXThreefieldScene = System.get("threefieldscene.js");
   var Application = function Application() {
     PXUtil.trace_func('App::constructor');
     this.renderer;

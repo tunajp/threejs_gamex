@@ -5,12 +5,12 @@
  */
 
 
-import * as PXUtil from './util';
-import * as PXConfig from './config';
-import * as PXStartScene from './startscene';
-import * as PXOpeningScene from './openingscene';
-import * as PXTestScene from './testscene';
-import * as PXThreefieldScene from './threefieldscene';
+import * as PXUtil from './util.js';
+import * as PXConfig from './config.js';
+import * as PXStartScene from './startscene.js';
+import * as PXOpeningScene from './openingscene.js';
+import * as PXTestScene from './testscene.js';
+import * as PXThreefieldScene from './threefieldscene.js';
 
 /**
  * Application class
